@@ -1,3 +1,6 @@
+
+// import { response } from "msw/lib/types";
+     import axios from "axios";
 const Tabs = (topics) => {
   // TASK 3
   // ---------------------
@@ -13,6 +16,17 @@ const Tabs = (topics) => {
   //   <div class="tab">technology</div>
   // </div>
   //
+  const parent = document.createElement('div');
+
+  parent.classList.add ('topics')
+
+ topics.forEach(topic => {
+   const children =document.createElement('div')
+   children.classList.add('tab');
+   children.textContent = `${topic}`
+   parent.appendChild(children);
+ })
+return parent;
 }
 
 const tabsAppender = (selector) => {
@@ -23,6 +37,19 @@ const tabsAppender = (selector) => {
   // Find the array of topics inside the response, and create the tabs using the Tabs component.
   // Append the tabs to the element in the DOM that matches the selector passed to the function.
   //
+  const tabsAppSel = document.querySelector(`${selector}`)
+
+  axios
+  .get(`https://lambda-times-api.herokuapp.com/topics`)
+  .then( response => {
+    const dataTop = response.data.topics
+    tabsAppSel.appendChild(Tabs(dataTop))
+  })
+  .catch( error => {
+    console.log(error)
+    console.log('there is an error')
+  })
+  return 
 }
 
 export { Tabs, tabsAppender }

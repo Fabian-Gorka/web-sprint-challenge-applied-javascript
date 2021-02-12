@@ -1,4 +1,8 @@
+
+import axios from 'axios';
+
 const Card = (article) => {
+ console.log(article.headline);
   // TASK 5
   // ---------------------
   // Implement this function, which should return the markup you see below.
@@ -17,7 +21,41 @@ const Card = (article) => {
   //   </div>
   // </div>
   //
+  const cardDiv = document.createElement('div')
+  const headLineTxt = document.createElement('div')
+  const authorDiv = document.createElement('div')
+  const imgContainerDiv = document.createElement('div')
+  const image = document.createElement('img')
+  const span = document.createElement('span')
+  const head1 = document.createElement('h1') 
+
+  cardDiv.classList.add('card')
+  headLineTxt.classList.add('headline')
+  authorDiv.classList.add('author')
+  imgContainerDiv.classList.add('img-container')
+
+ 
+  cardDiv.appendChild(headLineTxt);
+  cardDiv.appendChild(authorDiv);
+  authorDiv.appendChild(imgContainerDiv);
+  imgContainerDiv.appendChild(image);
+  authorDiv.appendChild(span);
+  headLineTxt.appendChild(head1)
+
+  head1.innerHTML = article.headline;
+  image.setAttribute("src", article.authorPhoto);
+  span.innerHTML = `By ${article.authorName}`;
+
+
+  cardDiv.addEventListener('click', () => {
+    console.log(headLineTxt)
+  });
+
+  return cardDiv;
+
 }
+
+
 
 const cardAppender = (selector) => {
   // TASK 6
@@ -28,6 +66,31 @@ const cardAppender = (selector) => {
   // Create a card from each and every article object in the response, using the Card component.
   // Append each card to the element in the DOM that matches the selector passed to the function.
   //
+ 
+  let artGen = document.querySelector(selector);
+  
+  axios
+    .get(`https://lambda-times-api.herokuapp.com/articles`)
+    .then((res) => {
+      console.log(res.data.articles);
+      const keys = Object.keys(res.data.articles) 
+      keys.forEach(key => {
+        //console.log(article);
+        //console.log(Card(article));
+        res.data.articles[key].forEach(article =>{ 
+          artGen.appendChild(Card(article));
+        })
+        
+       })
+      })
+
+    // .catch((err) => {
+    //   console.log(err)
+    // })
+    console.log(artGen);
+    return artGen;
 }
 
-export { Card, cardAppender }
+
+
+export { Card, cardAppender } 

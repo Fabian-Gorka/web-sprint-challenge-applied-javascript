@@ -11,7 +11,25 @@ const Header = (title, date, temp) => {
   //    <span class="temp">{ temp }</span>
   //  </div>
   //
-}
+  const headDiv = document.createElement('div')
+  const dateSpan = document.createElement('span')
+  const head1 = document.createElement('h1')
+  const tempSpan = document.createElement('span')
+
+  headDiv.appendChild(dateSpan);
+  headDiv.appendChild(head1);
+  headDiv.appendChild(tempSpan);
+
+  headDiv.classList.add('header');
+  dateSpan.classList.add('date')
+  tempSpan.classList.add('temp')
+
+  dateSpan.textContent = `${date}`;
+  head1.textContent = `${title}`;
+  tempSpan.textContent = `${temp}`;
+
+  return headDiv
+} 
 
 const headerAppender = (selector) => {
   // TASK 2
@@ -20,6 +38,16 @@ const headerAppender = (selector) => {
   // It should create a header using the Header component above, passing arguments of your choosing.
   // It should append the header to the element in the DOM that matches the given selector.
   //
+  const headAppSel = document.querySelector(`${selector}`)
+  let currentDate = new Date();
+  let dd = String(currentDate.getDate()).padStart(2, '0');
+  let mm = String(currentDate.getMonth()+ 1).padStart(2, '0');
+  let year = currentDate.getFullYear();
+  let temp = '92';
+  let head = "Man its hot out!"
+  currentDate =`${mm}/${dd}/${year}`
+  
+  headAppSel.appendChild(Header(head, currentDate, temp))
 }
 
 export { Header, headerAppender }
